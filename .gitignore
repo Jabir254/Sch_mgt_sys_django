@@ -3,3 +3,8 @@
 
 # Virtual environment
 venv/
+
+__pycache__/
+
+
+school/__pycache__/
