@@ -1,0 +1,5 @@
+# Secret key
+secret_key.txt
+
+# Virtual environment
+venv/
