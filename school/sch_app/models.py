@@ -62,3 +62,39 @@ class Course_mgt(models.Model):
 
     def __str__(self):
         return self.name
+
+class Attendance(models.Model):
+    date = models.DateField()
+    is_present = models.BooleanField(default=False)
+    student = models.ForeignKey(std_mgt, on_delete=models.CASCADE, null=True, blank=True)
+    staff_att = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        if self.student:
+            return f"Student Attendance - {self.student.name} - {self.date}"
+        elif self.Staff:
+            return f"Staff Attendance - {self.staff_att.name} - {self.date}"
+        else:
+            return f"Attendance - {self.date}"
+
+
+class Grade_mgt(models.Model):
+    """Grade of each student"""
+    student_grade = models.ForeignKey(std_mgt, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course_mgt, on_delete=models.CASCADE)
+    marks = models.DecimalField(max_digits=5, decimal_places=2)
+
+    # Other fields related to grading
+
+    def __str__(self):
+        return f"Grade - {self.student_grade.name} ({self.course.name})"
+
+
+class Transcript(models.Model):
+    student = models.OneToOneField(std_mgt, on_delete=models.CASCADE, primary_key=True)
+    academic_year = models.CharField(max_length=10)
+    overall_gpa = models.DecimalField(max_digits=4, decimal_places=2)
+
+
+    def __str__(self):
+        return f"Transcript - {self.student.name} ({self.academic_year})"
