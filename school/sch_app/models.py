@@ -31,7 +31,7 @@ class Staff(models.Model):
     # Fields for staff details
     name = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
-    teaching_assignments = models.ManyToManyField('Course',\
+    teaching_assignments = models.ManyToManyField('Course_mgt',\
                                                   related_name='staff')
 
     # Fields for attendance tracking
@@ -52,7 +52,7 @@ class Staff(models.Model):
         return self.name
 
 
-Class Course(models.Model):
+class Course_mgt(models.Model):
     """fields of course details"""
     name = models.CharField(max_length=100)
     description = models.TextField()
