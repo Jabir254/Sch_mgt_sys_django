@@ -1,8 +1,8 @@
 from django.contrib import admin
-from . models import std_mgt, Staff, LibraryRecord, Course_mgt, Attendance, Grade_mgt, Transcript, Timetable, Book, Finance, FeeCategory, Payment
+from . models import Student, Staff, LibraryRecord, Course, Attendance, Grade,Transcript, Timetable, Book, Finance, FeeCategory,Teacher
 # Register your models here.
 
-@admin.register(std_mgt)
+@admin.register(Student)
 class std_mgtAdmin(admin.ModelAdmin):
     pass
 
@@ -14,7 +14,7 @@ class StaffAdmin(admin.ModelAdmin):
 class LibraryRecordAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Course_mgt)
+@admin.register(Course)
 class Course_mgtAdmin(admin.ModelAdmin):
     pass
 
@@ -23,7 +23,7 @@ class AttendanceAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Grade_mgt)
+@admin.register(Grade)
 class Grade_mgtAdmin(admin.ModelAdmin):
     pass
 
@@ -46,12 +46,3 @@ class FinanceAdmin(admin.ModelAdmin):
 @admin.register(FeeCategory)
 class FeeCategoryAdmin(admin.ModelAdmin):
     pass
-
-
-
-@admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
-    pass
-
-
-
