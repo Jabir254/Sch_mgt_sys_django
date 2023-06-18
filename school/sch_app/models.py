@@ -1,11 +1,23 @@
 from django.db import models
+import random
+
+class RandomIDField(models.AutoField):
+    def get_random_id(self):
+        # Generate a random ID
+        return random.randint(1000, 9999)
+
+    def get_db_prep_value(self, value, connection, prepared=False):
+        if value is None:
+            value = self.get_random_id()
+        return value
+
 # Create your models here.
 
 
 class std_mgt(models.Model):
 
     # Fields for student records
-    admission_number = models.CharField(max_length=20, unique=True)
+    admission_number = RandomIDField(primary_key=True)
     name = models.CharField(max_length=100)
     date_of_birth = models.DateField()
     grade = models.CharField(max_length=10)
@@ -13,13 +25,9 @@ class std_mgt(models.Model):
     # Fields for student registrations
     registration_date = models.DateField()
     registration_status = models.BooleanField(default=False)
-
-    # Fields for attendance tracking
-    attendance_date = models.DateField()
-    is_present = models.BooleanField(default=False)
-
+ 
     # Fields for grading and performance monitoring
-    subject = models.CharField(max_length=50)
+    subject = models.ForeignKey('Course_mgt', on_delete=models.SET_NULL, null=True)
     marks = models.DecimalField(max_digits=5, decimal_places=2)
     performance = models.CharField(max_length=20)
 
@@ -57,26 +65,21 @@ class Course_mgt(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     teacher = models.ForeignKey('Staff', on_delete=models.SET_NULL, null=True)
-    management = models.ForeignKey('std_mgt',
-                                   on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
 
 
 class Attendance(models.Model):
-
+    student_name = models.ForeignKey('std_mgt', on_delete=models.CASCADE, null=True)
     date = models.DateField()
     is_present = models.BooleanField(default=False)
-    student = models.ForeignKey(std_mgt, on_delete=models.CASCADE,
-                                null=True, blank=True)
-    staff_att = models.ForeignKey(Staff, on_delete=models.CASCADE,
-                                  null=True, blank=True)
+    staff_att = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        if self.student:
-            return f"Student Attendance - {self.student.name} - {self.date}"
-        elif self.Staff:
+        if self.student_name:
+            return f"Student Attendance - {self.student_name.name} - {self.date}"
+        elif self.staff_att:
             return f"Staff Attendance - {self.staff_att.name} - {self.date}"
         else:
             return f"Attendance - {self.date}"
